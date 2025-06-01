@@ -1,8 +1,9 @@
-<!DOCTYPE html>
+
+ <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>人生段速｜人生段速檢測</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap');
@@ -99,7 +100,38 @@
   </div>
 
   <script>
-    const questions = [...]; // 保持原本問題
+    const questions = [
+      {
+        q: "1. 騎行時遇黃燈，有幾位朋友已通過路口，你的選擇？",
+        options: [
+          ["A. 停下來，安全第一（3檔）", 3],
+          ["B. 等紅燈，欣賞風景（2檔）", 2],
+          ["C. 等一下再追上（1檔）", 1],
+          ["D. 衝一下，應該能過（5檔）", 5],
+          ["E. 衝啊，享受衝刺（6檔）", 6]
+        ]
+      },
+      {
+        q: "2. 遇道路施工，大家尋找替代方案，你的建議？",
+        options: [
+          ["A. 折返去逛吸引你的店家（2檔）", 2],
+          ["B. 選遠但平穩的道路（4檔）", 4],
+          ["C. 走向秘境但坡度險峻（1檔）", 1],
+          ["D. 山路有上下坡但可抵達（5檔）", 5],
+          ["E. 就近休息再想對策（3檔）", 3]
+        ]
+      },
+      {
+        q: "3. 大雨橋下避雨，你的想法是？",
+        options: [
+          ["A. 找點樂子等雨停（2檔）", 2],
+          ["B. 加速前進，事後整理（6檔）", 6],
+          ["C. 雨中騎行也有趣（7檔）", 7],
+          ["D. 等等吧，視線模糊不好騎（3檔）", 3],
+          ["E. 不知所措感到焦躁（1檔）", 1]
+        ]
+      }
+    ];
 
     let current = 0;
     let scores = [];
@@ -109,11 +141,51 @@
       showQuestion();
     }
 
-    function showQuestion() { /* 填入原本問題顯示邏輯 */ }
+    function showQuestion() {
+      const qContainer = document.getElementById('questions');
+      qContainer.innerHTML = '';
+      const qData = questions[current];
 
-    function nextQuestion(score) { /* 填入原本切換邏輯 */ }
+      const qDiv = document.createElement('div');
+      qDiv.classList.add('question');
+      qDiv.style.display = 'block';
 
-    function showResult() { /* 填入原本結果顯示邏輯 */ }
+      const qTitle = document.createElement('h2');
+      qTitle.textContent = qData.q;
+      qDiv.appendChild(qTitle);
+
+      const opts = document.createElement('div');
+      opts.classList.add('options');
+
+      qData.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.textContent = opt[0];
+        btn.onclick = () => nextQuestion(opt[1]);
+        opts.appendChild(btn);
+      });
+
+      qDiv.appendChild(opts);
+      qContainer.appendChild(qDiv);
+    }
+
+    function nextQuestion(score) {
+      scores.push(score);
+      current++;
+      if (current < questions.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      document.getElementById('questions').style.display = 'none';
+      document.getElementById('result').style.display = 'block';
+      const count = {};
+      scores.forEach(s => count[s] = (count[s] || 0) + 1);
+      const top = Object.entries(count).sort((a, b) => b[1] - a[1])[0][0];
+      document.getElementById('resultText').innerText = `你目前最接近的段速是 ${top} 檔！`;
+    }
   </script>
 </body>
 </html>
