@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Untitled</title>
+  
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>人生段速｜人生段速檢測‘</title>
+  <style>
+    body {
+      font-family: "Noto Serif TC", serif;
+      background-color: #fdfcfb;
+      color: #004B97;
+      margin: 40
+    ;
+      padding: 0;
+    }
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 2rem;
+      text-align: center;
+    }
+    h1 {
+      font-size: 5rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+    .btn {
+      margin-top: 2rem;
+      padding: 0.5rem 2rem;
+      font-size: 1.2rem;
+      border: none;
+      background-color: #003060;
+      color: white;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    .question, .result {
+      display: none;
+      margin-top: 2rem;
+      color: #004B97;
+    }
+    .options button {
+      display: block;
+      margin: 0.5rem auto;
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+      width: 100%;
+      max-width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background-color: #fff;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="intro">
+      <h1>人生段速檢測</h1>
+      <p>本。</p>
+      <button class="btn" onclick="startQuiz()">開始測驗</button>
+    </div>
+
+    <div id="questions"></div>
+
+    <div class="result" id="result">
+      <h2>你的段速是...</h2>
+      <p id="resultText"></p>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        q: "1. 騎行時遇黃燈，有幾位朋友已通過路口，你的選擇？",
+        options: [
+          ["A. 停下來，安全第一（3檔）", 3],
+          ["B. 等紅燈，欣賞風景（2檔）", 2],
+          ["C. 等一下再追上（1檔）", 1],
+          ["D. 衝一下，應該能過（5檔）", 5],
+          ["E. 衝啊，享受衝刺（6檔）", 6]
+        ]
+      },
+      {
+        q: "2. 遇道路施工，大家尋找替代方案，你的建議？",
+        options: [
+          ["A. 折返去逛吸引你的店家（2檔）", 2],
+          ["B. 選遠但平穩的道路（4檔）", 4],
+          ["C. 走向秘境但坡度險峻（1檔）", 1],
+          ["D. 山路有上下坡但可抵達（5檔）", 5],
+          ["E. 就近休息再想對策（3檔）", 3]
+        ]
+      },
+      {
+        q: "3. 大雨橋下避雨，你的想法是？",
+        options: [
+          ["A. 找點樂子等雨停（2檔）", 2],
+          ["B. 加速前進，事後整理（6檔）", 6],
+          ["C. 雨中騎行也有趣（7檔）", 7],
+          ["D. 等等吧，視線模糊不好騎（3檔）", 3],
+          ["E. 不知所措感到焦躁（1檔）", 1]
+        ]
+      },
+      {
+        q: "4. 遇到困難時，你會？",
+        options: [
+          ["A. 觀察後再行動（3檔）", 3],
+          ["B. 冷靜評估，慢慢來（4檔）", 4],
+          ["C. 再試試看總會有法子（5檔）", 5],
+          ["D. 遲早能解決（6檔）", 6],
+          ["E. 不知結局也要拼（1檔）", 1]
+        ]
+      },
+      {
+        q: "5. 進入狀況時你會？",
+        options: [
+          ["A. 享受當下不變動（2檔）", 2],
+          ["B. 保持節奏持續推進（4檔）", 4],
+          ["C. 嘗試更難任務（5檔）", 5],
+          ["D. 衝刺突破一下（6檔）", 6],
+          ["E. 有靈感就全速追逐（7檔）", 7]
+        ]
+      },
+      {
+        q: "6. 不熟但有興趣的活動邀約？",
+        options: [
+          ["A. 問清楚風險再決定（3檔）", 3],
+          ["B. 就當作新體驗試試看（2檔）", 2],
+          ["C. 有點緊張但願意嘗試（5檔）", 5],
+          ["D. 馬上答應，玩出火花（6檔）", 6],
+          ["E. 憑直覺衝就對了（7檔）", 7]
+        ]
+      },
+      {
+        q: "7. 面對長期任務，你的心態？",
+        options: [
+          ["A. 小心規劃降風險（3檔）", 3],
+          ["B. 按部就班每天一點（4檔）", 4],
+          ["C. 當作旅程享受過程（2檔）", 2],
+          ["D. 找捷徑但仍努力（5檔）", 5],
+          ["E. 一口氣解決最好（6檔）", 6]
+        ]
+      },
+      {
+        q: "8. 想完成事但環境變數大，你會？",
+        options: [
+          ["A. 調整步調找新方法（4檔）", 4],
+          ["B. 等情勢明朗再動（3檔）", 3],
+          ["C. 雖難仍堅持初衷（1檔）", 1],
+          ["D. 創造機會主動出擊（5檔）", 5],
+          ["E. 情勢混亂也全力衝刺（6檔）", 6]
+        ]
+      },
+      {
+        q: "9. 完成大事後的感受？",
+        options: [
+          ["A. 好累但值得（1檔）", 1],
+          ["B. 很滿足也記得過程（2檔）", 2],
+          ["C. 放下負擔迎接下一段（4檔）", 4],
+          ["D. 突破一道牆很有成就感（5檔）", 5],
+          ["E. 還能更好再挑戰（7檔）", 7]
+        ]
+      }
+    ];
+
+    let current = 0;
+    let scores = [];
+
+    function startQuiz() {
+      document.querySelector('.intro').style.display = 'none';
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const qContainer = document.getElementById('questions');
+      qContainer.innerHTML = '';
+      const qData = questions[current];
+
+      const qDiv = document.createElement('div');
+      qDiv.classList.add('question');
+      qDiv.style.display = 'block';
+
+      const qTitle = document.createElement('h2');
+      qTitle.textContent = qData.q;
+      qDiv.appendChild(qTitle);
+
+      const opts = document.createElement('div');
+      opts.classList.add('options');
+
+      qData.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.textContent = opt[0];
+        btn.onclick = () => nextQuestion(opt[1]);
+        opts.appendChild(btn);
+      });
+
+      qDiv.appendChild(opts);
+      qContainer.appendChild(qDiv);
+    }
+
+    function nextQuestion(score) {
+      scores.push(score);
+      current++;
+      if (current < questions.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      document.getElementById('questions').style.display = 'none';
+      document.getElementById('result').style.display = 'block';
+      const count = {};
+      scores.forEach(s => count[s] = (count[s] || 0) + 1);
+      const top = Object.entries(count).sort((a, b) => b[1] - a[1])[0][0];
+      document.getElementById('resultText').innerText = `你目前最接近的段速是 ${top} 檔！`;
+    }
+  </script>
+</body>
+</html>
+<!-- partial -->
+  
+</body>
+</html>
