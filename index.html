@@ -50,7 +50,7 @@
       margin: 0 auto;
       padding: 3rem 2rem;
       text-align: center;
-      background-image: url('1.png');
+      background-image: url('https://github.com/lij1357/bike/raw/main/1.png');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
@@ -97,7 +97,7 @@
     <div class="start-overlay" onclick="startQuiz()"></div>
   </div>
 
-  <div class="container">
+  <div class="container" style="display: none;">
     <div id="questions"></div>
     <div class="result" id="result">
       <h2>你的段速是...</h2>
@@ -144,6 +144,7 @@
 
     function startQuiz() {
       document.querySelector('.intro').style.display = 'none';
+      document.querySelector('.container').style.display = 'block';
       showQuestion();
     }
 
